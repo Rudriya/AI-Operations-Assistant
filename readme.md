@@ -8,7 +8,6 @@ This project demonstrates **agent‑based reasoning**, **LLM orchestration**, an
 ---
 
 ##  Architecture
-The system follows a **multi‑agent design**:
 
 1. **Planner Agent**
    - Uses an LLM (Gemini) to convert a user task into a strict JSON execution plan
@@ -27,7 +26,6 @@ The system follows a **multi‑agent design**:
 ```text
 Client → FastAPI → Planner Agent → Executor Agent → Verifier Agent → JSON Response
 ```
-
 ---
 
 ##  Tools & APIs Used
@@ -59,6 +57,7 @@ ai_ops_assistant/
 │   └── weather_tool.py # Open‑Meteo API integration
 │
 ├── llm/
+    ├── humanizer.py    # humanize raw json output 
 │   └── client.py       # Gemini LLM client
 │
 ├── schemas.py          # FastAPI request/response models
@@ -105,7 +104,11 @@ GEMINI_API_KEY=your_gemini_api_key_here
 ```bash
 uvicorn main:app --reload
 ```
+## Run Frontend
 
+```bash
+streamlit run app.py
+```
 The API will be available at:
 - **Base URL:** `http://127.0.0.1:8000`
 - **Swagger UI:** `http://127.0.0.1:8000/docs`
@@ -115,7 +118,7 @@ The API will be available at:
 ##  Architecture Diagram
 
 ```text
-User → FastAPI → Planner (LLM) → Executor (APIs) → Verifier → Response
+User → Streamlit UI → FastAPI → Planner (LLM) → Executor (APIs) → Verifier → JSON → Humanizer (LLM) → User
 ```
 
 ---
@@ -167,14 +170,29 @@ curl -X POST "http://127.0.0.1:
 ```
 
 ---
+## 🖥️ Frontend (Streamlit)
 
+A lightweight **Streamlit frontend** is included to demonstrate the system in a user-friendly, product-style interface.
+
+### Frontend Behavior
+
+- Users enter a natural-language task
+- The system plans and executes using agents
+- Results are displayed as a **clear natural-language answer**
+- Raw JSON output is available in an expandable section for transparency
+
+This design mirrors real-world GenAI systems, where structured system outputs are translated into conversational responses at the presentation layer.
+---
 ##  Key Design Decisions
 
-- **Agent separation** ensures clean reasoning vs execution
-- **Strict JSON planning** avoids monolithic prompts
-- **Free APIs only** guarantee evaluator reliability
-- **FastAPI + Pydantic** provide type‑safe, self‑documenting APIs
-- **Retry + caching** improve external API robustness
+-- **Multi-agent architecture (Planner → Executor → Verifier)** enforces clear separation of reasoning, execution, and validation responsibilities
+- **Strict JSON-based planning** ensures deterministic, testable outputs and avoids monolithic or opaque prompts
+- **LLM usage is scoped deliberately**: Gemini is used only where reasoning or language generation adds value (planning and humanization)
+- **Structured backend, humanized frontend**: the FastAPI backend always returns reliable JSON, while the Streamlit UI translates results into natural language for better UX
+- **Free and reliable third-party APIs** (GitHub, Open-Meteo) guarantee smooth evaluation without authentication or quota issues
+- **FastAPI + Pydantic schemas** provide type safety, automatic validation, and self-documenting APIs via Swagger
+- **Resilience by design**: retry logic and caching improve robustness against transient external API failures
+
 
 ---
 
@@ -184,7 +202,7 @@ curl -X POST "http://127.0.0.1:
 |------------|--------|
 | Multi‑agent architecture | ✅ |
 | LLM‑powered reasoning | ✅ |
-| ≥ 2 real API integrations | ✅ |
+| 2 real API integrations | ✅ |
 | Local runnable demo | ✅ |
 | Clean code & structure | ✅ |
 | Documentation | ✅ |
