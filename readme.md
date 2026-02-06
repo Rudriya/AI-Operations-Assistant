@@ -1,13 +1,13 @@
 # AI Operations Assistant (FastAPI + Multi‑Agent GenAI)
 
-## 🚀 Overview
+##  Overview
 The **AI Operations Assistant** is a locally runnable, production‑style GenAI system that accepts a natural‑language task, plans execution steps, calls real third‑party APIs, and returns a structured response.
 
 This project demonstrates **agent‑based reasoning**, **LLM orchestration**, and **real API integration** using a clean FastAPI service.
 
 ---
 
-## 🧠 Architecture
+##  Architecture
 The system follows a **multi‑agent design**:
 
 1. **Planner Agent**
@@ -25,12 +25,12 @@ The system follows a **multi‑agent design**:
    - Produces the final API response
 
 ```text
-Client → FastAPI → Planner → Executor → Verifier → Response
+Client → FastAPI → Planner Agent → Executor Agent → Verifier Agent → JSON Response
 ```
 
 ---
 
-## 🛠️ Tools & APIs Used
+##  Tools & APIs Used
 
 - **GitHub API** (free)
   - Searches popular repositories by query
@@ -45,7 +45,7 @@ Client → FastAPI → Planner → Executor → Verifier → Response
 
 ---
 
-## 📁 Project Structure
+##  Project Structure
 
 ```text
 ai_ops_assistant/
@@ -70,26 +70,26 @@ ai_ops_assistant/
 
 ---
 
-## ⚙️ Setup Instructions
+##  Setup Instructions
 
-### 1️⃣ Clone the Repository
+### 1️. Clone the Repository
 ```bash
 git clone <your-repo-url>
 cd ai_ops_assistant
 ```
 
-### 2️⃣ Create Virtual Environment
+### 2️. Create Virtual Environment
 ```bash
 python -m venv venv
 source venv/bin/activate  # Windows: venv\Scripts\activate
 ```
 
-### 3️⃣ Install Dependencies
+### 3️. Install Dependencies
 ```bash
 pip install -r requirements.txt
 ```
 
-### 4️⃣ Environment Variables
+### 4️. Environment Variables
 Create a `.env` file from `.env.example`:
 
 ```env
@@ -100,7 +100,7 @@ GEMINI_API_KEY=your_gemini_api_key_here
 
 ---
 
-## ▶️ Running the Application
+##  Running the Application
 
 ```bash
 uvicorn main:app --reload
@@ -112,7 +112,15 @@ The API will be available at:
 
 ---
 
-## 📡 API Usage
+##  Architecture Diagram
+
+```text
+User → FastAPI → Planner (LLM) → Executor (APIs) → Verifier → Response
+```
+
+---
+
+##  API Usage
 
 ### Endpoint
 `POST /task`
@@ -124,7 +132,10 @@ The API will be available at:
 }
 ```
 
-### Example Response
+### Sample `curl` Command
+
+```bash
+curl -X POST "http://127.0.0.1:
 ```json
 {
   "status": "success",
@@ -157,7 +168,7 @@ The API will be available at:
 
 ---
 
-## ✅ Key Design Decisions
+##  Key Design Decisions
 
 - **Agent separation** ensures clean reasoning vs execution
 - **Strict JSON planning** avoids monolithic prompts
@@ -167,7 +178,7 @@ The API will be available at:
 
 ---
 
-## 📊 Evaluation Criteria Coverage
+##  Evaluation Criteria Coverage
 
 | Requirement | Status |
 |------------|--------|
@@ -180,7 +191,7 @@ The API will be available at:
 
 ---
 
-## 🚧 Future Improvements
+##  Future Improvements
 
 - Parallel tool execution
 - Response caching layer
@@ -190,9 +201,8 @@ The API will be available at:
 
 ---
 
-## 👤 Author
+##  Author
 **Rudriya Bansal**  
-B.Tech CSE | GenAI & Backend Engineering Enthusiast
 
 ---
 
